@@ -23,8 +23,15 @@ def extract_artifact_id_and_version(url):
     exit(1)
 
 def execute_maven_command(url, data):
-    maven_install_command = "mvn install:install-file -DgroupId=io.nirahtech -DartifactId="+data["artifact"]+" -Dversion="+data["version"]+" -Dfile="+url+" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -Durl=C:/Users/nmetivier/Documents/nirah-maven-repo -DcreateChecksum=true"
+    maven_install_command = "mvn install:install-file -DgroupId=io.nirahtech -DartifactId="+data["artifact"]+" -Dversion="+data["version"]+" -Dfile="+url+" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -Durl=C:/Users/nmetivier/Documents/nirah-maven-repo/ -DcreateChecksum=true"
     os.system(maven_install_command)
+
+def copy_local_for_remote(project):
+    for root, directory_name, file_name in os.walk("."):
+        for file in file_name:
+            if ("maven-metadata-local.xml" in str(file)):
+                path = str(os.getcwd()+"/io/nirahtech/"+project+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
+                shutil.copyfile(path, path.replace("-local", ''))
 
 def process():
     ARGUMENTS = sys.argv
@@ -60,6 +67,8 @@ def process():
                     url = str(url + str(potential_jar_file))
                     data = extract_artifact_id_and_version(url)
                     execute_maven_command(url, data)
+                    print(str(data["artifact"]))
+                    copy_local_for_remote(str(data["artifact"]))
 
 def download_or_update():
     github_project_url = "https://github.com/nirah-technology/nirahtech-maven-repository.git"
