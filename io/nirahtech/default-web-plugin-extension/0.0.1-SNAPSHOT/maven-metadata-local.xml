@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
   <groupId>io.nirahtech</groupId>
-  <artifactId>json-geco</artifactId>
+  <artifactId>default-web-plugin-extension</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <versioning>
     <snapshot>
       <localCopy>true</localCopy>
     </snapshot>
-    <lastUpdated>20200110133708</lastUpdated>
+    <lastUpdated>20200110133702</lastUpdated>
     <snapshotVersions>
       <snapshotVersion>
         <extension>jar</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20200110133708</updated>
+        <updated>20200110133702</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>pom</extension>
         <value>0.0.1-SNAPSHOT</value>
-        <updated>20200110133708</updated>
+        <updated>20200110133702</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

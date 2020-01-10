@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata>
   <groupId>io.nirahtech</groupId>
-  <artifactId>json-geco</artifactId>
+  <artifactId>default-web-plugin-extension</artifactId>
   <versioning>
     <versions>
       <version>0.0.1-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20200110133708</lastUpdated>
+    <lastUpdated>20200110133702</lastUpdated>
   </versioning>
 </metadata>
