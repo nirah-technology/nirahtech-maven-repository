@@ -23,7 +23,7 @@ def extract_artifact_id_and_version(url):
     exit(1)
 
 def execute_maven_command(url, data):
-    maven_install_command = "mvn install:install-file -DgroupId=io.nirahtech -DartifactId="+data["artifact"]+" -Dversion="+data["version"]+" -Dfile="+url+" -Dpackaging=jar -DgeneratePom=true  -DcreateChecksum=true"
+    maven_install_command = "mvn install:install-file -DgroupId=io.nirahtech -DartifactId="+data["artifact"]+" -Dversion="+data["version"]+" -Dfile="+url+" -Dpackaging=jar -DgeneratePom=true -DlocalRepositoryPath=. -Durl=C:/Users/nmetivier/Documents/nirah-maven-repo -DcreateChecksum=true"
     os.system(maven_install_command)
 
 def process():
