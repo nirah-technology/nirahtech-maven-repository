@@ -30,7 +30,12 @@ def copy_local_for_remote(project):
     for root, directory_name, file_name in os.walk("."):
         for file in file_name:
             if ("maven-metadata-local.xml" in str(file)):
-                path = str(os.getcwd()+"/io/nirahtech/"+project+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
+                path = str(os.getcwd()+"/io/nirahtech/"+project["artifact"]+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
+                shutil.copyfile(path, path.replace("-local", ''))
+    for root, directory_name, file_name in os.walk("./"+project["version"]):
+        for file in file_name:
+            if ("maven-metadata-local.xml" in str(file)):
+                path = str(os.getcwd()+"/io/nirahtech/"+project["artifact"]+'/'+project["version"]+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
                 shutil.copyfile(path, path.replace("-local", ''))
 
 def process():
@@ -68,7 +73,7 @@ def process():
                     data = extract_artifact_id_and_version(url)
                     execute_maven_command(url, data)
                     print(str(data["artifact"]))
-                    copy_local_for_remote(str(data["artifact"]))
+                    copy_local_for_remote(data)
 
 def download_or_update():
     github_project_url = "https://github.com/nirah-technology/nirahtech-maven-repository.git"
