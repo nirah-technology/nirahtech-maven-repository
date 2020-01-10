@@ -27,15 +27,17 @@ def execute_maven_command(url, data):
     os.system(maven_install_command)
 
 def copy_local_for_remote(project):
-    for root, directory_name, file_name in os.walk("."):
+    nirah_mavn_repo_git_project = str(os.getcwd()+'/').replace("\\", "/").replace("//", "/").replace("//", "/")
+    for root, directory_name, file_name in os.walk(nirah_mavn_repo_git_project):
         for file in file_name:
             if ("maven-metadata-local.xml" in str(file)):
                 path = str(os.getcwd()+"/io/nirahtech/"+project["artifact"]+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
                 shutil.copyfile(path, path.replace("-local", ''))
-    for root, directory_name, file_name in os.walk("./"+project["version"]):
+    nirah_mavn_repo_git_project += '/io/nirahtech/'+project["artifact"]+'/'+project["version"]+'/'
+    for root, directory_name, file_name in os.walk(nirah_mavn_repo_git_project):
         for file in file_name:
             if ("maven-metadata-local.xml" in str(file)):
-                path = str(os.getcwd()+"/io/nirahtech/"+project["artifact"]+'/'+project["version"]+'/'+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
+                path = str(nirah_mavn_repo_git_project+str(file)).replace("\\", "/").replace("//", "/").replace("//", "/")
                 shutil.copyfile(path, path.replace("-local", ''))
 
 def process():
@@ -72,7 +74,6 @@ def process():
                     url = str(url + str(potential_jar_file))
                     data = extract_artifact_id_and_version(url)
                     execute_maven_command(url, data)
-                    print(str(data["artifact"]))
                     copy_local_for_remote(data)
 
 def download_or_update():
@@ -80,10 +81,8 @@ def download_or_update():
     project_name = github_project_url.split('/')[-1].replace(".git", '')
     if (os.path.exists("./"+project_name)):
         os.chdir("./"+project_name)
-        print("Must be updated!")
         os.system("git pull origin repository")
     else:
-        print("Must be downloaded!")
         os.system("git clone " + github_project_url)
         os.chdir("./"+project_name)
 
