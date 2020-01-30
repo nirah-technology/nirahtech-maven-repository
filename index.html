@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>NIRAH-TECHNOLOGY :: Maven Repository</title>
+
+    <style>
+    
+    button#button:disabled {
+        cursor: not-allowed;
+    }
+
+.slider{
+  position:absolute;
+  width:50%;
+  height:5px;
+  overflow-x: hidden;
+}
+
+.line{
+  position:absolute;
+  opacity: 0.4;
+  background:rgba(255,0,0,1);
+  width:150%;
+  height:5px;
+}
+
+.subline{
+  position:absolute;
+  background:rgba(255,0,0,1);
+  height:5px; 
+}
+.inc{
+  animation: increase 2s infinite;
+}
+.dec{
+  animation: decrease 2s 0.5s infinite;
+}
+
+@keyframes increase {
+   from { left: -5%; width: 5%; }
+   to { left: 130%; width: 100%;}
+}
+@keyframes decrease {
+   from { left: -80%; width: 80%; }
+   to { left: 110%; width: 10%;}
+}
+    </style>
+</head>
+<body>
+    <a href="./repository/">Dépôt des dépendances.</a>
+    <button id="button" type="button" onclick="start_update()">Mettre à jour le dépôt.</button>
+
+    <div class="slider">
+        <div class="line"></div>
+        <div class="subline inc"></div>
+        <div class="subline dec"></div>
+      </div>
+
+    <script>
+        let is_currently_updating = false;
+        let observer = undefined;
+
+        get_status(true);
+
+        function get_status(was_call_at_load) {
+            let url = "./status";
+            let xmlhttp;
+            if (was_call_at_load) {
+                if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); }
+                else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+                xmlhttp.onreadystatechange = () => {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        is_currently_updating = (xmlhttp.responseText.toLowerCase() == "true");
+                        if (is_currently_updating) {
+                            document.getElementById("button").disabled = true;
+                            document.getElementById("button").innerHTML = "Mise à jour en cours..."
+                            observer = setInterval(get_status, 1000, false);
+                        } else {
+                            document.getElementById("button").disabled = false;
+                            document.getElementById("button").innerHTML = "Mettre à jour le dépôt."
+                        }
+                    }
+                }
+                xmlhttp.open("GET", url, false);
+                xmlhttp.send();
+            } else {
+                if (is_currently_updating) {
+                    if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); }
+                    else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+                    xmlhttp.onreadystatechange = () => {
+                        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                            document.getElementById("button").disabled = true;
+                            document.getElementById("button").innerHTML = "Mise à jour en cours..."
+                            is_currently_updating = (xmlhttp.responseText.toLowerCase() == "true");
+                        }
+                    }
+                    xmlhttp.open("GET", url, false);
+                    xmlhttp.send();
+                } else {
+                    document.getElementById("button").disabled = false;
+                    document.getElementById("button").innerHTML = "Mettre à jour le dépôt."
+                }
+            }
+        }
+
+        function start_update() {
+            url = "./update"
+            if (window.XMLHttpRequest) { xmlhttp=new XMLHttpRequest(); }
+            else { xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); }
+            xmlhttp.onreadystatechange=() => {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    observer = setInterval(get_status.bind(false) ,1000);
+                }
+            }
+            xmlhttp.open("GET", url, false);
+            xmlhttp.send();
+        }
+    </script>
+</body>
+</html>
+
