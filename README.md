@@ -42,7 +42,7 @@ Pour pouvoir utiliser l'une des bibliothèque publié sur le dépot, il faut, en
         <repository>
             <id>nirahtech-maven-repository</id>
             <name>Nirah-Technology Personnal Maven Repository</name>
-            <url>https://github.com/Zaroastre/nirahtech-maven-repository</url>
+            <url>https://maven.nirah-technology.fr/repository/</url>
         </repository>
     </repositories>
     ...
